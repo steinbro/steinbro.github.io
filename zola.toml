@@ -63,7 +63,7 @@ default_language = "en"
 
 # The site title and description; used in feeds by default.
 title = "steinbro.github.io"
-description = "Open source engineering leadership"
+description = "Content by Daniel W. Steinbrook"
 
 # When set to "true", a search index is built from the pages and section
 # content for `default_language`.
