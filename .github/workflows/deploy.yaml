@@ -1,0 +1,23 @@
+name: Deploy Zola to Pages
+on:
+  push:
+    branches: ["main"]
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: kytta/zola-build-pages@v1 # Builds and uploads artifact
+        with:
+          zola-version: "0.22.1"
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - uses: actions/deploy-pages@v4 # Deploys the uploaded artifact
