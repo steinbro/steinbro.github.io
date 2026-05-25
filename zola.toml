@@ -3,7 +3,7 @@
 # "YOUR_USERNAME", "YOUR_SITE_TITLE", etc., with your actual data.
 
 # The base URL of the site; the only required configuration variable.
-base_url = "https://YOUR_URL.TLD"
+base_url = "https://steinbro.github.io"
 
 # The site theme to use.
 theme = "linkita"
@@ -54,7 +54,7 @@ generate_sitemap = true
 generate_robots_txt = true
 
 # The default author for pages
-author = "YOUR_USERNAME"
+author = "steinbro"
 
 # The default language; used in feeds.
 default_language = "en"
@@ -62,8 +62,8 @@ default_language = "en"
 # Default language is English
 
 # The site title and description; used in feeds by default.
-title = "YOUR_SITE_TITLE"
-description = "YOUR_SITE_DESCRIPTION"
+title = "steinbro.github.io"
+description = "Open source engineering leadership"
 
 # When set to "true", a search index is built from the pages and section
 # content for `default_language`.
@@ -344,18 +344,17 @@ header_dark_color = "#27272a"
 header_links = [
   { url = "@/pages/archive.md", name = "Archive" },
   { url = "$BASE_URL/tags/", name = "Tags" },
-  { url = "@/pages/projects/_index.md", name = "Projects" },
 ]
 
 # Profiles
-[extra.profiles.YOUR_USERNAME]
+[extra.profiles.steinbro]
 
 # The path to your profile photo.
 # e.g. "icons/github.svg"
-avatar_url = "profile.png"
+avatar_url = "dws.jpg"
 
 # A description of what is in the avatar.
-avatar_alt = ""
+avatar_alt = "Headshot"
 
 # Invert avatar color in dark mode.
 # Default value: false
@@ -363,11 +362,11 @@ avatar_invert = false
 
 # Profile name.
 # Default value: the username
-name = "YOUR_NAME"
+name = "Daniel W. Steinbrook"
 
 # Profile bio.
 # Supports Markdown.
-bio = "Welcome to my personal site!"
+bio = "Engineering Manager at Canonical"
 
 # Social icons.
 # "name" should be the file name of "static/icons/*.svg" or
@@ -375,13 +374,13 @@ bio = "Welcome to my personal site!"
 # "url" supports "$BASE_URL".
 # Other variables: "urls", "title", "titles".
 social = [
-    { name = "bluesky", url = "https://bsky.app/profile/username" },
-    { name = "github", url = "https://github.com/username" },
-    { name = "email", url = "mailto:example@example.com" },
+    { name = "github", url = "https://github.com/steinbro" },
+    { name = "linkedin", url = "https://github.com/steinbro" },
+    { name = "email", url = "mailto:dsteinbrook@gmail.com" },
     { name = "rss", url = "$BASE_URL/atom.xml" },
 ]
 
-[extra.profiles.YOUR_USERNAME.open_graph]
+[extra.profiles.steinbro.open_graph]
 
 # Set if you have a Fediverse account.
 #  handle – Your Fediverse handle.
@@ -402,7 +401,7 @@ since = 2026
 license_url = "https://creativecommons.org/licenses/by-sa/4.0/deed"
 
 # Replace "YOUR_NAME" with your name and "CC BY-SA 4.0" with the name of the license you want.
-copyright = "&copy; $YEAR YOUR_NAME &vert; [CC BY-SA 4.0]($LICENSE_URL)"
+copyright = "&copy; $YEAR Daniel W. Steinbrook &vert; [CC BY-SA 4.0]($LICENSE_URL)"
 
 # Language specific options
 # For English
