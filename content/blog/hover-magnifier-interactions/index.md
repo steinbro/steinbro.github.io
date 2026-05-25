@@ -1,7 +1,7 @@
 +++
 title = "Fixing Web hover behaviors for magnifier users"
 description = "Client-side fixes for inaccessible interaction patterns."
-date = "2026-05-24"
+date = "2026-05-25"
 
 [taxonomies]
 tags = ["accessibility", "magnifier"]
@@ -31,7 +31,7 @@ At high zoom levels, the visible portion of the screen is tiny, and the magnifie
 The obvious solution, moving the mouse elsewhere, doesn't really work. Moving the pointer also moves the zoomed viewport, which can push the content completely off-screen.
 
 
-#### Important information outside the zoomed viewport
+#### Important information outside the viewport
 
 In some cases, the problem is spatial rather than transient. An interactive graph, for example, might show numerical values in a fixed corner of the screen while the user moves the mouse across the graph. Under full-screen magnification, the user may be able to see the graph or the readout, but not both at the same time. Moving the mouse to explore the graph also moves the zoomed viewport, making it difficult or impossible to keep the changing values visible.
 

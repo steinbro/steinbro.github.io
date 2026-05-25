@@ -375,7 +375,7 @@ bio = "Engineering Manager at Canonical"
 # Other variables: "urls", "title", "titles".
 social = [
     { name = "github", url = "https://github.com/steinbro" },
-    { name = "linkedin", url = "https://github.com/steinbro" },
+    { name = "linkedin", url = "https://www.linkedin.com/in/danielsteinbrook/" },
     { name = "email", url = "mailto:dsteinbrook@gmail.com" },
     { name = "rss", url = "$BASE_URL/atom.xml" },
 ]
