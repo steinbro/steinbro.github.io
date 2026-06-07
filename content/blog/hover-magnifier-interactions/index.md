@@ -1,6 +1,6 @@
 +++
-title = "Fixing Web hover behaviors for magnifier users"
-description = "Client-side fixes for inaccessible interaction patterns."
+title = "Adapting magnifier controls for mouse-centric websites"
+description = "Magnifier users need an alternative way to trigger hover states."
 date = "2026-05-25"
 
 [taxonomies]
@@ -13,7 +13,7 @@ Modern websites love using hover effects. Pausing the mouse somewhere inevitably
 
 For most users, this is fine and sometimes even helpful. If it's unwanted, the user can just move the mouse elsewhere. But it poses an accessibility challenge for full-screen magnification users. Their visible area of the page, known as a viewport, will be much smaller than what most other users have.
 
-![Ubuntu laptop with full-screen mangification](laptop-full-screen-zoom.png)
+![Ubuntu laptop with full-screen magnification](laptop-full-screen-zoom.png)
 
 Many hover-heavy interfaces are built around a pair of assumptions:
 
@@ -52,7 +52,7 @@ In macOS, this kind of functionality is built-in. One of the ["advanced options"
 
 With some AI assistance, I've replicated this as a ["freeze pointer" user script](https://github.com/steinbro/gnome-low-vis-config/blob/main/userscripts/A11yFreezePointerOnCtrl.js), which can be installed in a Web browser through an extension like [Tampermonkey](https://www.tampermonkey.net/).
 
-Below, as illustrated earlier, the user is moving the mouse across a graph while the exact values appear in a fixed location outside the magnified area. With the frozen-pointer userscript, however, the user can hold down the Control key to temporarily freeze the hover position on a single data point. This enables them to pan the magnified viewport until the readout is visible again, without changing which data point is selected under the mouse pointer.
+Below, as illustrated earlier, the user is moving the mouse across a graph while the exact values appear in a fixed location outside the magnified area. With the frozen-pointer user script, however, the user can hold down the Control key to temporarily freeze the hover position on a single data point. This enables them to pan the magnified viewport until the readout is visible again, without changing which data point is selected under the mouse pointer.
 
 <video width="100%" controls>
   <source src="freeze-pointer-demo.mp4" type="video/mp4">
