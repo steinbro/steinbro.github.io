@@ -1,6 +1,6 @@
 +++
 title = "An unobtrusive text-to-speech workflow in GNOME"
-description = "Speak selected text improved with Speech Dispatcher."
+description = "Speak selected text, improved with Speech Dispatcher."
 date = "2026-06-06"
 
 [taxonomies]
@@ -9,11 +9,18 @@ tags = ["accessibility", "text-to-speech"]
 
 For every blind user who can't see their computer screen at all, there are many more low-vision users with some usable vision but not enough to read text on the screen comfortably. Users like this could benefit greatly from using more speech, but it's hard to recommend adopting a full-fledged screen reader. These tools can feel like too much for a user with significant remaining vision. Even beyond the massive set of keyboard shortcuts to learn, many applications are not optimized for assistive tech and can become even harder to navigate. No matter how masterful the user's command of their screen reader, they might conclude they're better off just relying on magnification and their remaining vision .
 
-When text-to-speech becomes not a convenience but a necessity, the user needs their operating system to make it available system-wide, across all applications. Making that a reality on major Linux desktop environments without turning on a screen reader requires some tinkering.
+When text-to-speech is not a convenience but a necessity, it needs to be available instantly, for any text on the screen. The operating system, or more specifically the desktop environment, can step in to provide it system-wide, across all applications. For Linux, this functionality (as with much else on Linux) is possible with some tinkering.
 
-### Other operating systems already do it
+### On-demand speech on other operating systems
 
-Other desktop operating systems figured this out some time ago. macOS has had ["Speak Selection" functionality](https://support.apple.com/en-ca/guide/mac-help/mh27448/mac) for ages. Microsoft introduced a ["Read from here" feature](https://blogs.windows.com/windowsexperience/2020/05/21/whats-coming-in-windows-10-accessibility/) through Magnifier in Windows 10. The [Reader View in Firefox](https://support.mozilla.org/en-US/kb/firefox-reader-view-clutter-free-web-pages) has text-to-speech built in as well.
+macOS has had ["Speak Selection" functionality](https://support.apple.com/en-ca/guide/mac-help/mh27448/mac) for ages. When actively speaking, the system shows a floating controller for playback and speech rate adjustment.
+![Speech controller on macOS](https://photos5.appleinsider.com/gallery/43696-85254-macos-speech-tip-3-xl.jpg)
+
+Microsoft similarly introduced [speech features into Magnifier](https://blogs.windows.com/windowsexperience/2020/05/21/whats-coming-in-windows-10-accessibility/) in Windows 10. Clicking the "Read from here" button starts reading text aloud from wherever the user specifies.
+![Windows Magnifier controls](https://winblogs.thesourcemediaassets.com/sites/2/2020/05/343dbcf643139fc55528c962b84b8da0.png)
+
+The [Reader View in Firefox](https://support.mozilla.org/en-US/kb/firefox-reader-view-clutter-free-web-pages) has text-to-speech built in as well.
+![Speech controls in Firefox Reader View](https://assets-prod.sumo.prod.webservices.mozgcp.net/media/uploads/gallery/images/2024-08-06-05-16-50-40e344.png)
 
 Screen readers also have some features that are geared towards partially-sighted users. Both NVDA on Windows and VoiceOver on macOS support a mode that reads text under the mouse pointer. But on Linux, [Orca's Mouse Review feature works inconsistently under Wayland](https://discourse.gnome.org/t/mouse-review-is-hit-and-miss/34949) the modern display system for Linux.
 
@@ -21,12 +28,20 @@ Screen readers also have some features that are geared towards partially-sighted
 
 A [2021 blog post](https://dev.to/tylerlwsmith/read-selected-text-out-loud-on-ubuntu-linux-45lj) demonstrates how to set up a keyboard shortcut to trigger text-to-speech using an impressively short shell script. The script simply grabs the highlighted text from the clipboard's primary selection buffer, and feeds that directly into the espeak synthesizer.
 
-This works great much of the time, putting aside espeak's very robotic voice characteristic of the 1980s-era speech synthesis techniques. But you'll run into many unhandled edge cases if you use it extensively. For example, it struggles with nonstandard characters, like the Unicode characters used not infrequently to format social media posts. The word "𝐉𝐚𝐯𝐚𝐒𝐜𝐫𝐢𝐩𝐭" is read unintelligibly as "letter 1d409, letter 1d14a, ..." And worse, emoji characters are silently dropped.
+This works great much of the time, but you'll run into many unhandled edge cases if you use it extensively. For example. text containing Unicode mathematical characters, a common social media trick for adding styling, can turn into a stream of arcane code point names. "𝐉𝐚𝐯𝐚𝐒𝐜𝐫𝐢𝐩𝐭" becomes "letter 1D409, letter 1D41A, ..." Emoji fare even worse, often disappearing entirely from the spoken output.
 
 My favorite failure mode is when the script encounters text surrounded by double square brackets. The espeak synthesizer interprets what's inside as raw phonetic data. The result is text that is a very exotic flavor of garbled. [[ If you happen to be using it now, this example will demonstrate exactly what I  mean,. ]]
 
 ### A native extension for GNOME
 
-I've published a [GNOME shell extension](https://extensions.gnome.org/extension/9659/speak-selection/) that adds some requisite sophistication to the same basic idea. The integration with the GNOME desktop is an improvement, but more valuable is using speech dispatcher. This service is far from new but addresses many of the problems we saw, translating Unicode characters, reading emoji names, and stripping speech synthesizer control characters. Moreover, as a system-wide service sitting between applications and the speech synthesizer, it improves the listening experience as well.  It prevents multiple voices from speaking over each other, as well as maintaining global settings for voice, speech rate, and so on.
+I've published a [GNOME shell extension](https://extensions.gnome.org/extension/9659/speak-selection/) that builds on the same basic approach to capturing and speaking selected text, but makes it a bit more robust to text encountered in the wild.
 
-Nevertheless, since we're still using fundamentally the same text-capturing method, some limitations remain. In particular, not all text in applications is speakable. Some frameworks, notably Flutter, do not implement the primary selection buffer, so our extension does not recognize when text has been highlighted in applications that use this framework.
+![Speak Selection extension tray icon menu](speak_selection_extension_tray_icon_menu.png)
+
+The most visible improvement is its integration with the GNOME desktop, but the bigger change comes from inserting Speech Dispatcher between your text and the speech engine. This long-standing Linux service handles many of the failure modes we encountered earlier: it translates Unicode characters into something meaningful, announces emoji names instead of silently dropping them, and filters out control sequences that can trip up speech synthesizers.
+
+Because Speech Dispatcher operates as a system-wide service, it also improves the overall listening experience. Other applications won't try to speak over the extension, and you can change your preferred voice or speaking rate without needing to edit the values hard-coded into the original script.
+
+There are still some limitations. Most significantly, the extension still relies on the primary selection buffer, a legacy feature of the Linux desktop that isn't supported universally. For example, applications that are based on the Flutter toolkit, including the Ubuntu App Center and FluffyChat, [don't populate this buffer](https://github.com/flutter/flutter/issues/180231) when the user highlights text. That means the extension will ignore what you've highlighted in your Flutter-based app, and instead speak the last text highlighted in some other non-Flutter-based application.
+
+Nevertheless, give it a try and let me know if you find it helpful!
