@@ -7,9 +7,7 @@ date = "2026-06-06"
 tags = ["accessibility", "text-to-speech"]
 +++
 
-For every blind user who can't see their computer screen at all, there are many more low-vision users with some usable vision but not enough to read text on the screen comfortably. Users like this could benefit greatly from using more speech, but it's hard to recommend adopting a full-fledged screen reader. These tools can feel like too much for a user with significant remaining vision. Even beyond the massive set of keyboard shortcuts to learn, many applications are not optimized for assistive tech and can become even harder to navigate. No matter how masterful the user's command of their screen reader, they might conclude they're better off just relying on magnification and their remaining vision .
-
-When text-to-speech is not a convenience but a necessity, it needs to be available instantly, for any text on the screen. The operating system, or more specifically the desktop environment, can step in to provide it system-wide, across all applications. For Linux, this functionality (as with much else on Linux) is possible with some tinkering.
+When text-to-speech is not a convenience but a necessity, it needs to be available instantly, for any text on the screen. The operating system, or more specifically the desktop environment, can step in to provide it system-wide, across all applications. For Linux, this functionality (as with much else on Linux) is possible, with some tinkering.
 
 ### On-demand speech on other operating systems
 
@@ -24,9 +22,9 @@ The [Reader View in Firefox](https://support.mozilla.org/en-US/kb/firefox-reader
 
 Screen readers also have some features that are geared towards partially-sighted users. Both NVDA on Windows and VoiceOver on macOS support a mode that reads text under the mouse pointer. But on Linux, [Orca's Mouse Review feature works inconsistently under Wayland](https://discourse.gnome.org/t/mouse-review-is-hit-and-miss/34949) the modern display system for Linux.
 
-### Prior art
+### Prior art on Linux
 
-A [2021 blog post](https://dev.to/tylerlwsmith/read-selected-text-out-loud-on-ubuntu-linux-45lj) demonstrates how to set up a keyboard shortcut to trigger text-to-speech using an impressively short shell script. The script simply grabs the highlighted text from the clipboard's primary selection buffer, and feeds that directly into the espeak synthesizer.
+A [2021 blog post](https://dev.to/tylerlwsmith/read-selected-text-out-loud-on-ubuntu-linux-45lj) demonstrates how to set up a keyboard shortcut to trigger text-to-speech on most any Linux desktop environment. The impressively short shell script simply grabs the highlighted text from the clipboard's primary selection buffer, and feeds that directly into the espeak synthesizer.
 
 This works great much of the time, but you'll run into many unhandled edge cases if you use it extensively. For example. text containing Unicode mathematical characters, a common social media trick for adding styling, can turn into a stream of arcane code point names. "𝐉𝐚𝐯𝐚𝐒𝐜𝐫𝐢𝐩𝐭" becomes "letter 1D409, letter 1D41A, ..." Emoji fare even worse, often disappearing entirely from the spoken output.
 

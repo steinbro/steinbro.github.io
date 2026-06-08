@@ -9,7 +9,7 @@ tags = ["accessibility", "magnifier"]
 
 ### The problem
 
-Modern websites love using hover effects. Pausing the mouse somewhere inevitably causes something to pop up, whether that be a preview card, a floating menu, or something else.
+Modern websites love using hover effects. Pausing the mouse pointer over various parts of the page can trigger preview cards, floating menus, or something else entirely.
 
 For most users, this is fine and sometimes even helpful. If it's unwanted, the user can just move the mouse elsewhere. But it poses an accessibility challenge for full-screen magnification users. Their visible area of the page, known as a viewport, will be much smaller than what most other users have.
 
