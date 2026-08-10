@@ -7,7 +7,8 @@ date = "2026-06-06"
 tags = ["accessibility", "text-to-speech"]
 +++
 
-When text-to-speech is not a convenience but a necessity, it needs to be available instantly, for any text on the screen. The operating system, or more specifically the desktop environment, can step in to provide it system-wide, across all applications. For Linux, this functionality (as with much else on Linux) is possible, with some tinkering.
+With assistive tech, software ergonomics matter. When the user relies on a capability all day, every day, it doesn't just need to work; it needs to be frictionless. When that feature is text-to-speech, it should be available instantly, for any text on the screen. The operating system, or more specifically the desktop environment, can step in to provide it system-wide, across all applications. For Linux, this functionality (as with much else on Linux) is possible, with some tinkering.
+
 
 ### On-demand speech on other operating systems
 

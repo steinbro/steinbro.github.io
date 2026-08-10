@@ -1,6 +1,6 @@
 +++
 title = "Adapting magnifier controls for mouse-centric websites"
-description = "Magnifier users need an alternative way to trigger hover states."
+description = "Magnifier users need a way to avoid triggering hover states."
 date = "2026-05-25"
 
 [taxonomies]
