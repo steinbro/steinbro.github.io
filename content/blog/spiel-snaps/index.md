@@ -51,31 +51,40 @@ $ snap connect orca:speech-provider-piper speech-provider-piper:speech-provider
 
 There's a third layer of packaging required here, beyond the speech providers and client applications: voices. TTS engines typically support many languages, with potentially many voice options for each. For a modern TTS engine like Piper, an installed voice can use hundreds of megabytes of disk space for the underlying AI model. It's therefore best to let users choose which subset of voices they'd like to install.
 
-Snaps have a couple different concepts related to content packaged separately from an application. [Components](https://snapcraft.io/docs/explanation/how-snaps-work/snap-components/) are designed to package optional parts of an application. This might sound appropriate for TTS voices at first, but aren't a great fit because they can only be built and published together with the snap they support. [Content snaps](https://snapcraft.io/docs/reference/interfaces/content-interface/), by contrast, can be published bu third parties at a later date, and are intended for these kinds of runtime resources.
+Snaps have a couple different concepts related to packaging content separately from an application. [Content snaps](https://snapcraft.io/docs/reference/interfaces/content-interface/) are published independently from the snaps they support, potentially even by a different author, and use interfaces to share resources. They're most valuable when the packaged content is used by multiple snaps, such as [GNOME runtimes](https://github.com/ubuntu/gnome-sdk). Since the Piper voice models will only be used by the speech provider snap, this isn't the case here.
 
-We can use the same plugs and slots concept as with the speech provider and client, but this time the speech provider defines the plug and the voice pack defines the slot:
+On the other hand, [components](https://snapcraft.io/docs/explanation/how-snaps-work/snap-components/) are designed to package optional parts of a single application. This is the technique used by other snaps that have selectively-installable ML models, such as [gemma4](https://github.com/canonical/gemma4-snap). Components are also much faster to build than separate content snaps, because they are all built in the same build container as the snap they support. Since our Piper speech provider will have dozens of supported languages and locales, this can make a big difference here.
+
+Defining components involves simply including a top-level `components` key and a part that writes the desired data into the component's directory. For Piper voices, we download the voice model and its metadata individually, because cloning the whole repository of voices would incur several gigabytes of network traffic and disk usage.
 ```yaml
 # speech-provider-piper snap
-plugs:
-  piper-voices:
-    interface: content
-    content: piper-voices
-    target: $SNAP/voices
-```
-```yaml
-# each piper-voices anap
-slots:
-  piper-voices:
-    interface: content
-    content: piper-voices
-    source:
-      read:
-```
+components:
+  voices-en-gb-alan-medium:
+    type: standard
+    summary: en-GB alan voice for Piper
+    description: en-GB alan voice for Piper
+    version: '0.1'
 
-After installing a voice, the user can connect it to the speech provider manually. They will also need to restart the speech provider to refresh the available voice list:
-```
-$ snap connect speech-provider-piper:piper-voices piper-voices-es-mx:piper-voices
-$ snap restart speech-provider-piper.speech-provider-piper
+parts:
+  voices-en-gb-alan-medium:
+    plugin: dump
+    source: ./component-base
+    build-packages:
+      - curl
+      - ca-certificates
+    override-build: |
+      craftctl default
+      set -eu
+      mkdir -p "$CRAFT_PART_INSTALL/en_GB-alan-medium"
+      curl -L --fail --retry 3 \
+        -o "$CRAFT_PART_INSTALL/en_GB-alan-medium/en_GB-alan-medium.onnx" \
+        "https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_GB/alan/medium/en_GB-alan-medium.onnx"
+      curl -L --fail --retry 3 \
+        -o "$CRAFT_PART_INSTALL/en_GB-alan-medium/en_GB-alan-medium.onnx.json" \
+        "https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_GB/alan/medium/en_GB-alan-medium.onnx.json"
+    organize:
+      en_GB-alan-medium/en_GB-alan-medium.onnx: (component/voices-en-gb-alan-medium)/en_GB-alan-medium.onnx
+      en_GB-alan-medium/en_GB-alan-medium.onnx.json: (component/voices-en-gb-alan-medium)/en_GB-alan-medium.onnx.json
 ```
 
 ### Next steps
